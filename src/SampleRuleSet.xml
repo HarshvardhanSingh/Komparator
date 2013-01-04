@@ -1,0 +1,84 @@
+<!-- 
+Values:
+0 - false
+1 - true
+
+Even the text inside the tag is considered as an attribute - the value attribute. 
+Hence please having an attribute called 'value' inside the tags.
+
+Ruleset Definition of these pertain to comparision only and not on the grammar of the XML itself.
+A 'required' node means that this node is required for comparision. i.e. if it exists in one document, it must be available in other document too.
+
+node: each document shall be read as a structured document and parsed as a tree. Each 'node' in the ruleset is the rule applicable to the node mentioned in attribute 'name'.
+needs-order: whether this node needs to be ordered as compared to its siblings. This takes lesser preference to 'children-ordering'.
+required: whether this node is optional or required. This has more preference to value of 'children-all-required' in parent node.
+need-attributes-order: whether the attributes need to be ordered. This has lesser preference to the 'children-ordering' attribute in parent.
+all-attributes-match: whether all the attribute values need to match.
+children-ordering: whether all the children must be ordered. It takes mode precedence over 'needs-order' attribute of child node.
+children-all-required: whether all the children are required. It takes lesser precedence over 'required' attribute of child node.
+ -->
+<ruleset>
+	<rule id="1" name="employee-information">
+		<needs-order>1</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>1</children-all-required>
+	</rule>
+	<rule id="2" name="company">
+		<needs-order>0</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>1</children-all-required>
+	</rule>
+	<rule id="3" name="employees">
+		<needs-order>0</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>1</children-all-required>
+	</rule>
+	<rule id="4" name="employee">
+		<needs-order>1</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>1</children-all-required>
+	</rule>
+	<rule id="5" name="employee-name">
+		<needs-order>0</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>0</children-all-required>
+	</rule>
+	<rule id="6" name="employee-designation">
+		<needs-order>0</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>0</children-all-required>
+	</rule>
+	<rule id="6" name="employee-email">
+		<needs-order>0</needs-order>
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<children-all-required>0</children-all-required>
+	</rule>
+</ruleset>
