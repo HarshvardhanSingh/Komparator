@@ -19,7 +19,7 @@ public class KomparatorEngine
 	 *            The ruleset that needs to be used to compare the documents.
 	 * @return A list of differences as Komparison objects.
 	 */
-	public List<Komparison> compareDocuments(KomparatorNode documentTree1, KomparatorNode documentTree2, KomparisonRuleset ruleset)
+	public static List<Komparison> compareDocuments(KomparatorNode documentTree1, KomparatorNode documentTree2, KomparisonRuleset ruleset)
 		{
 		List<Komparison> comparisons = new ArrayList<Komparison>();
 

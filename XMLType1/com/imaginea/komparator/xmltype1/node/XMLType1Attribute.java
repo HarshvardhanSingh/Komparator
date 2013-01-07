@@ -1,4 +1,6 @@
-package com.imaginea.komparator.engine;
+package com.imaginea.komparator.xmltype1.node;
+
+import com.imaginea.komparator.interfaces.nodes.KomparatorAttribute;
 
 /**
  * Represents an attribute in the komparator node.
@@ -6,7 +8,7 @@ package com.imaginea.komparator.engine;
  * @author harshavardhansingh
  * 
  */
-public class KomparatorAttribute
+public class XMLType1Attribute implements KomparatorAttribute
 	{
 	/**
 	 * Name of the attribute.
@@ -16,6 +18,17 @@ public class KomparatorAttribute
 	 * Value of the attribute.
 	 */
 	private String value;
+	
+	public XMLType1Attribute()
+		{
+		
+		}
+	
+	public XMLType1Attribute(String name, String value)
+		{
+		this.name = name;
+		this.value = value;
+		}
 
 	public String getName()
 		{

@@ -16,11 +16,34 @@ public class KomparatorRule
 	 * Name of the rule.
 	 */
 	private String name;
+	/**
+	 * Whether we need ordering of node during comparison. This is overridden by 'childrenOrdering'.
+	 */
 	private boolean needsOrder;
-	private boolean needAttributesORder;
+	/**
+	 * Whether we need this node during comparison. If yes, then the node ordering is considered. Else false.
+	 * This overrides by the 'childrenRequired' attribute of parent.
+	 */
+	private boolean required;
+	/**
+	 * Whether the attributes need to be in order.
+	 */
+	private boolean needAttributesOrder;
+	/**
+	 * Whether all the attributes are required.
+	 */
 	private boolean allAttributesRequired;
+	/**
+	 * Whether the values for all attributes need to match.
+	 */
 	private boolean allAttributesMatch;
+	/**
+	 * Whether the children need to be ordered. This overrides 'needsORder' of child node.
+	 */
 	private boolean childrenOrdering;
+	/**
+	 * Whether all the children are required or not. This is overridden by 'required' of child node.
+	 */
 	private boolean childrenRequired;
 
 	public int getId()
@@ -53,14 +76,24 @@ public class KomparatorRule
 		this.needsOrder = needsOrder;
 		}
 
-	public boolean isNeedAttributesORder()
+	public boolean getRequired()
 		{
-		return needAttributesORder;
+		return required;
 		}
 
-	public void setNeedAttributesORder(boolean needAttributesORder)
+	public void setRequired(boolean required)
 		{
-		this.needAttributesORder = needAttributesORder;
+		this.required = required;
+		}
+
+	public boolean isNeedAttributesOrder()
+		{
+		return needAttributesOrder;
+		}
+
+	public void setNeedAttributesOrder(boolean needAttributesOrder)
+		{
+		this.needAttributesOrder = needAttributesOrder;
 		}
 
 	public boolean isAllAttributesRequired()
@@ -101,5 +134,30 @@ public class KomparatorRule
 	public void setChildrenRequired(boolean childrenRequired)
 		{
 		this.childrenRequired = childrenRequired;
+		}
+	
+	public String toString()
+		{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Id: ");
+		builder.append(id);
+		builder.append(" | Name: ");
+		builder.append(name);
+		builder.append(" | NeedsOrder: ");
+		builder.append(needsOrder);
+		builder.append(" | Required: ");
+		builder.append(required);
+		builder.append(" | NeedAttributeOrder: ");
+		builder.append(needAttributesOrder);
+		builder.append(" | AllAttributesRequired: ");
+		builder.append(allAttributesRequired);
+		builder.append(" | AllAttributesMatch: ");
+		builder.append(allAttributesMatch);
+		builder.append(" | ChildrenOrdering: ");
+		builder.append(childrenOrdering);
+		builder.append(" | ChildrenRequired: ");
+		builder.append(childrenRequired);
+		
+		return builder.toString();
 		}
 	}
