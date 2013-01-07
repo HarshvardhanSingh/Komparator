@@ -18,6 +18,7 @@ public class XMLType1Node implements KomparatorNode
 	private int ruleId;
 	private List<KomparatorAttribute> attributes = new ArrayList<KomparatorAttribute>();
 	private List<KomparatorNode> children = new ArrayList<KomparatorNode>();
+	private String differentiatorValue;
 
 	public String getName()
 		{
@@ -57,6 +58,47 @@ public class XMLType1Node implements KomparatorNode
 	public void setChildren(List<KomparatorNode> children)
 		{
 		this.children = children;
+		}
+
+	public String getDifferentiatorValue()
+		{
+		return differentiatorValue;
+		}
+
+	public void setDifferentiatorValue(String differentiatorValue)
+		{
+		this.differentiatorValue = differentiatorValue;
+		}
+
+	public int compareTo(Object o)
+		{
+		if (!(o instanceof XMLType1Node))
+			{
+			return -1;
+			}
+		XMLType1Node secondNode = (XMLType1Node) o;
+		int comparison = name.compareTo(secondNode.getName());
+		if (comparison == 0)
+			{
+			// The node name is same. Now we need to check the differentiator.
+			if (differentiatorValue != null)
+				{
+				comparison = differentiatorValue.compareTo(secondNode.getDifferentiatorValue());
+				}
+			}
+		return comparison;
+		}
+	
+	public String toString()
+		{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Name: ");
+		builder.append(name);
+		builder.append(" | Differentiator Value: ");
+		builder.append(differentiatorValue);
+		builder.append(" | Rule Id: ");
+		builder.append(ruleId);
+		return builder.toString();
 		}
 
 	}

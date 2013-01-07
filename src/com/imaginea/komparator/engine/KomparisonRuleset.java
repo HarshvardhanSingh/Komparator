@@ -99,16 +99,30 @@ public class KomparisonRuleset
 				{
 				Node childNode = children.item(nodeCounter);
 				String nodeName = childNode.getNodeName().intern();
-				String nodeValue = childNode.getNodeValue();
-				boolean isRuleOn;
-				if ("0".equals(nodeValue))
+				if("#text" == nodeName)
+					{
+					// This is a #text node and we need to skip it.
+					continue;
+					}
+				String nodeValue = childNode.getTextContent().intern();
+				
+				if("differentiator" == nodeName)
+					{
+					rule.setDifferentiator(nodeValue);
+					// Move on to next item.
+					continue;
+					}
+				boolean isRuleOn = false;
+				
+				if ("0" == nodeValue)
 					{
 					isRuleOn = false;
 					}
-				else
+				else if("1" == nodeValue)
 					{
 					isRuleOn = true;
 					}
+				
 				if ("needs-order" == nodeName)
 					{
 					rule.setNeedsOrder(isRuleOn);
@@ -156,5 +170,10 @@ public class KomparisonRuleset
 	public boolean isRulesetCorrupted()
 		{
 		return isRulesetCorrupted;
+		}
+	
+	public KomparatorRule getRule(int ruleId)
+		{
+		return rules.get(ruleId); 
 		}
 	}

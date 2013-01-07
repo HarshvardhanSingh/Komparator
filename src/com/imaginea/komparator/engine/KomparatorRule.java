@@ -45,6 +45,10 @@ public class KomparatorRule
 	 * Whether all the children are required or not. This is overridden by 'required' of child node.
 	 */
 	private boolean childrenRequired;
+	/**
+	 * The attribute that acts as differentiator between same name nodes.
+	 */
+	private String differentiator;
 
 	public int getId()
 		{
@@ -76,7 +80,7 @@ public class KomparatorRule
 		this.needsOrder = needsOrder;
 		}
 
-	public boolean getRequired()
+	public boolean isRequired()
 		{
 		return required;
 		}
@@ -135,7 +139,17 @@ public class KomparatorRule
 		{
 		this.childrenRequired = childrenRequired;
 		}
-	
+
+	public String getDifferentiator()
+		{
+		return differentiator;
+		}
+
+	public void setDifferentiator(String differentiator)
+		{
+		this.differentiator = differentiator;
+		}
+
 	public String toString()
 		{
 		StringBuilder builder = new StringBuilder();
@@ -157,7 +171,9 @@ public class KomparatorRule
 		builder.append(childrenOrdering);
 		builder.append(" | ChildrenRequired: ");
 		builder.append(childrenRequired);
-		
+		builder.append(" | Differentiator: ");
+		builder.append(differentiator);
+
 		return builder.toString();
 		}
 	}

@@ -20,16 +20,14 @@ public class Kompare
 			{
 			e.printStackTrace();
 			}
-		
-		// Create the ruleset based on the rules file.
-		KomparisonRuleset ruleset = new KomparisonRuleset(Thread.currentThread().getContextClassLoader().getResourceAsStream("XML1RuleSet.xml"));
-		
+
 		KomparatorParser parser = KomparatorManager.getParser();
-		
+
 		KomparatorNode tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");
 		KomparatorNode tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample2.xml");
 		// Compare the two files.
-		KomparatorEngine.compareDocuments(tree1, tree2, ruleset);
+		KomparatorEngine engine = new KomparatorEngine();
+		engine.compareDocuments(tree1, tree2);
 		}
 
 	}

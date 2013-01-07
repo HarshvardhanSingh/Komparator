@@ -25,6 +25,9 @@ children-ordering
 	whether all the children must be ordered. It takes mode precedence over 'needs-order' attribute of child node.
 children-all-required
 	whether all the children are required. It takes lesser precedence over 'required' attribute of child node.
+differentiator
+	the attribute that differentiates this node with other nodes. For a node without a differentiator attribute, 
+	we cannot perform the needs-order or required checks.
  -->
 <ruleset>
 	<rule id="1" name="employee-information">
@@ -35,6 +38,7 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>1</children-all-required>
+		<differentiator>name</differentiator>
 	</rule>
 	<rule id="2" name="company">
 		<needs-order>0</needs-order>
@@ -44,6 +48,7 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>1</children-all-required>
+		<differentiator>name</differentiator>
 	</rule>
 	<rule id="3" name="employees">
 		<needs-order>0</needs-order>
@@ -53,6 +58,7 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>1</children-all-required>
+		<differentiator>name</differentiator>
 	</rule>
 	<rule id="4" name="employee">
 		<needs-order>1</needs-order>
@@ -62,8 +68,9 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>1</children-all-required>
+		<differentiator>id</differentiator>
 	</rule>
-	<rule id="5" name="employee-name">
+	<rule id="5" name="employee-info">
 		<needs-order>0</needs-order>
 		<required>1</required>
 		<need-attributes-order>0</need-attributes-order>
@@ -71,26 +78,9 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>0</children-all-required>
+		<differentiator>name</differentiator>
 	</rule>
-	<rule id="6" name="employee-designation">
-		<needs-order>0</needs-order>
-		<required>1</required>
-		<need-attributes-order>0</need-attributes-order>
-		<all-attributes-required>0</all-attributes-required>
-		<all-attributes-match>1</all-attributes-match>
-		<children-ordering>0</children-ordering>
-		<children-all-required>0</children-all-required>
-	</rule>
-	<rule id="7" name="employee-email">
-		<needs-order>0</needs-order>
-		<required>1</required>
-		<need-attributes-order>0</need-attributes-order>
-		<all-attributes-required>0</all-attributes-required>
-		<all-attributes-match>1</all-attributes-match>
-		<children-ordering>0</children-ordering>
-		<children-all-required>0</children-all-required>
-	</rule>
-	<rule id="8" name="project">
+	<rule id="6" name="project">
 		<needs-order>0</needs-order>
 		<required>1</required>
 		<need-attributes-order>0</need-attributes-order>
@@ -98,5 +88,6 @@ children-all-required
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<children-all-required>1</children-all-required>
+		<differentiator>name</differentiator>
 	</rule>
 </ruleset>

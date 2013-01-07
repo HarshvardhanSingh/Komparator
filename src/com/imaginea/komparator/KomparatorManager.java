@@ -1,10 +1,12 @@
 package com.imaginea.komparator;
 
+import com.imaginea.komparator.engine.KomparisonRuleset;
 import com.imaginea.komparator.interfaces.parser.KomparatorParser;
 
 public class KomparatorManager
 	{
 	private static KomparatorParser parser;
+	private static KomparisonRuleset ruleset;
 
 	/**
 	 * Register a parser to be used.
@@ -21,4 +23,15 @@ public class KomparatorManager
 		{
 		return parser;
 		}
+
+	public static KomparisonRuleset getRuleset()
+		{
+		return ruleset;
+		}
+
+	public static void setRuleset(KomparisonRuleset ruleset)
+		{
+		KomparatorManager.ruleset = ruleset;
+		}
+
 	}

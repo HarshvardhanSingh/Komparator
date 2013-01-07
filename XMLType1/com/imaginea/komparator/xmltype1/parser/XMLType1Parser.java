@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import com.imaginea.komparator.KomparatorManager;
+import com.imaginea.komparator.engine.KomparisonRuleset;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 import com.imaginea.komparator.interfaces.parser.KomparatorParser;
 import com.imaginea.komparator.util.KomparatorDOMParser;
@@ -24,6 +25,11 @@ public class XMLType1Parser implements KomparatorParser
 		Logger logger = LoggerFactory.getLogger(XMLType1Parser.class);
 		// Register itself as the parser.
 		KomparatorManager.setParser(new XMLType1Parser());
+
+		// Create the ruleset based on the rules file.
+		KomparisonRuleset ruleset = new KomparisonRuleset(Thread.currentThread().getContextClassLoader().getResourceAsStream("XML1RuleSet.xml"));
+		KomparatorManager.setRuleset(ruleset);
+
 		logger.info("Registered XMLType1Parser parser.");
 		}
 
@@ -34,7 +40,7 @@ public class XMLType1Parser implements KomparatorParser
 		try
 			{
 			Element root = KomparatorDOMParser.parseDOM(new FileInputStream(documentPath));
-			KomparatorNode komparatorRoot = parseDomTree(root);
+			return parseDomTree(root);
 			}
 		catch (FileNotFoundException fileNotFoundException)
 			{
@@ -51,7 +57,7 @@ public class XMLType1Parser implements KomparatorParser
 		String nodeName = node.getNodeName().intern();
 		xmlNode.setName(nodeName);
 		xmlNode.setRuleId(getRuleForNode(nodeName));
-		
+
 		// If the rule id was -1, this means the rule was not found. Hence we neglect the node.
 		if (xmlNode.getRuleId() == -1)
 			{
@@ -60,21 +66,27 @@ public class XMLType1Parser implements KomparatorParser
 		String value = "";
 		if (isDataNode(nodeName))
 			{
+			// Setting node value as an attribute.
 			value = node.getTextContent();
 			xmlNode.getAttributes().add(new XMLType1Attribute("value", value));
 			}
 		logger.debug("Obtained rule id '{}' for node '{}' with value '{}'.", xmlNode.getRuleId(), xmlNode.getName(), value);
 
-		
-
 		// Create attributes for the node.
 		for (int attributeCounter = 0; attributeCounter < node.getAttributes().getLength(); attributeCounter++)
 			{
 			Node attribute = node.getAttributes().item(attributeCounter);
+			String attributeName = attribute.getNodeName().intern();
+			String attributeValue = attribute.getNodeValue();
 			XMLType1Attribute xmlAttribute = new XMLType1Attribute();
-			xmlAttribute.setName(attribute.getNodeName());
-			xmlAttribute.setValue(attribute.getNodeValue());
+			xmlAttribute.setName(attributeName);
+			xmlAttribute.setValue(attributeValue);
 			xmlNode.getAttributes().add(xmlAttribute);
+			if(attributeName == getDifferentiatingAttributeForNode(nodeName))
+				{
+				// The return value is interned, hence we can do this comparison.
+				xmlNode.setDifferentiatorValue(attributeValue);
+				}
 			logger.debug("Added an attribute '{}' with value '{}' to the node '{}'.", xmlAttribute.getName(), xmlAttribute.getValue(), xmlNode.getName());
 			}
 
@@ -110,7 +122,7 @@ public class XMLType1Parser implements KomparatorParser
 			}
 		if ("project" == nodeName)
 			{
-			return 8;
+			return 6;
 			}
 		if ("employees" == nodeName)
 			{
@@ -120,19 +132,31 @@ public class XMLType1Parser implements KomparatorParser
 			{
 			return 4;
 			}
-		if ("name" == nodeName)
+		if ("info" == nodeName)
 			{
 			return 5;
 			}
-		if ("designation" == nodeName)
-			{
-			return 6;
-			}
-		if ("email" == nodeName)
-			{
-			return 7;
-			}
 		return -1;
+		}
+
+	/**
+	 * Fetches the differentiating attribute for a given node.
+	 * 
+	 * @param nodeName
+	 *            The name must be an interned string.
+	 * @return The attribute name that contains the differentiating value.
+	 */
+	private String getDifferentiatingAttributeForNode(String nodeName)
+		{
+		if ("employee-information" == nodeName || "company" == nodeName || "employees" == nodeName || "info" == nodeName || "project" == nodeName)
+			{
+			return "name";
+			}
+		if ("employee" == nodeName)
+			{
+			return "id";
+			}
+		return null;
 		}
 
 	/**
@@ -144,7 +168,7 @@ public class XMLType1Parser implements KomparatorParser
 	 */
 	private boolean isDataNode(String nodeName)
 		{
-		if ("name" == nodeName || "designation" == nodeName || "email" == nodeName)
+		if ("info" == nodeName)
 			{
 			return true;
 			}
