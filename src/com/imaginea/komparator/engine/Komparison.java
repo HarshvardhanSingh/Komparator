@@ -3,11 +3,6 @@ package com.imaginea.komparator.engine;
 import com.imaginea.komparator.interfaces.nodes.KomparatorAttribute;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 
-enum DifferenceType
-	{
-	MISSING_REQUIRED_NODE, IMPROPER_NODE_ORDER, MISSING_REQUIRED_ATTRIBUTE, MISMATCHED_ATTRIBUTE_VALUE, IMPROPER_ATTRIBUTE_ORDER
-	}
-
 public class Komparison
 	{
 	private KomparatorNode node1;
