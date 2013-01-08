@@ -17,10 +17,6 @@ public class KomparatorRule
 	 */
 	private String name;
 	/**
-	 * Whether we need ordering of node during comparison. This is overridden by 'childrenOrdering'.
-	 */
-	private boolean needsOrder;
-	/**
 	 * Whether we need this node during comparison. If yes, then the node ordering is considered. Else false.
 	 * This overrides by the 'childrenRequired' attribute of parent.
 	 */
@@ -41,10 +37,6 @@ public class KomparatorRule
 	 * Whether the children need to be ordered. This overrides 'needsORder' of child node.
 	 */
 	private boolean childrenOrdering;
-	/**
-	 * Whether all the children are required or not. This is overridden by 'required' of child node.
-	 */
-	private boolean childrenRequired;
 	/**
 	 * The attribute that acts as differentiator between same name nodes.
 	 */
@@ -70,15 +62,7 @@ public class KomparatorRule
 		this.name = name;
 		}
 
-	public boolean isNeedsOrder()
-		{
-		return needsOrder;
-		}
-
-	public void setNeedsOrder(boolean needsOrder)
-		{
-		this.needsOrder = needsOrder;
-		}
+	
 
 	public boolean isRequired()
 		{
@@ -130,15 +114,7 @@ public class KomparatorRule
 		this.childrenOrdering = childrenOrdering;
 		}
 
-	public boolean isChildrenRequired()
-		{
-		return childrenRequired;
-		}
-
-	public void setChildrenRequired(boolean childrenRequired)
-		{
-		this.childrenRequired = childrenRequired;
-		}
+	
 
 	public String getDifferentiator()
 		{
@@ -157,8 +133,6 @@ public class KomparatorRule
 		builder.append(id);
 		builder.append(" | Name: ");
 		builder.append(name);
-		builder.append(" | NeedsOrder: ");
-		builder.append(needsOrder);
 		builder.append(" | Required: ");
 		builder.append(required);
 		builder.append(" | NeedAttributeOrder: ");
@@ -169,8 +143,6 @@ public class KomparatorRule
 		builder.append(allAttributesMatch);
 		builder.append(" | ChildrenOrdering: ");
 		builder.append(childrenOrdering);
-		builder.append(" | ChildrenRequired: ");
-		builder.append(childrenRequired);
 		builder.append(" | Differentiator: ");
 		builder.append(differentiator);
 

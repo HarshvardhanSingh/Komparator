@@ -70,7 +70,7 @@ public class XMLType1Node implements KomparatorNode
 		this.differentiatorValue = differentiatorValue;
 		}
 
-	public int compareTo(Object o)
+	public int compareTo(KomparatorNode o)
 		{
 		if (!(o instanceof XMLType1Node))
 			{
@@ -88,7 +88,7 @@ public class XMLType1Node implements KomparatorNode
 			}
 		return comparison;
 		}
-	
+
 	public String toString()
 		{
 		StringBuilder builder = new StringBuilder();
@@ -100,5 +100,4 @@ public class XMLType1Node implements KomparatorNode
 		builder.append(ruleId);
 		return builder.toString();
 		}
-
 	}

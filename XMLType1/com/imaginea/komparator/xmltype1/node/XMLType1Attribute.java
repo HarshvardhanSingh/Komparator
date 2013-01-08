@@ -50,7 +50,7 @@ public class XMLType1Attribute implements KomparatorAttribute
 		this.value = value;
 		}
 
-	public int compareTo(Object o)
+	public int compareTo(KomparatorAttribute o)
 		{
 		if (!(o instanceof XMLType1Attribute))
 			{

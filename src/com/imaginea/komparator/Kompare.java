@@ -1,7 +1,6 @@
 package com.imaginea.komparator;
 
 import com.imaginea.komparator.engine.KomparatorEngine;
-import com.imaginea.komparator.engine.KomparisonRuleset;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 import com.imaginea.komparator.interfaces.parser.KomparatorParser;
 

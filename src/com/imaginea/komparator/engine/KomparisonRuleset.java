@@ -123,11 +123,7 @@ public class KomparisonRuleset
 					isRuleOn = true;
 					}
 				
-				if ("needs-order" == nodeName)
-					{
-					rule.setNeedsOrder(isRuleOn);
-					}
-				else if ("required" == nodeName)
+				if ("required" == nodeName)
 					{
 					rule.setRequired(isRuleOn);
 					}
@@ -146,10 +142,6 @@ public class KomparisonRuleset
 				else if ("children-ordering" == nodeName)
 					{
 					rule.setChildrenOrdering(isRuleOn);
-					}
-				else if ("children-all-required" == nodeName)
-					{
-					rule.setAllAttributesRequired(isRuleOn);
 					}
 				}
 			logger.info("Completely parsed rule: {}", rule);

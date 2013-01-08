@@ -2,7 +2,7 @@ package com.imaginea.komparator.interfaces.nodes;
 
 import java.util.List;
 
-public interface KomparatorNode extends Comparable
+public interface KomparatorNode extends Comparable<KomparatorNode>
 	{
 	public int getRuleId();
 	public String getName();
