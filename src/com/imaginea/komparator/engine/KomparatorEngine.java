@@ -78,10 +78,7 @@ public class KomparatorEngine
 		// If we are here, that means we have a rule that is applicable.
 		// We need to perform attribute comparison.
 		// Attribute comparison for the root nodes.
-		if (!compareAttributes(node1, node2, rule))
-			{
-			logger.info("The root nodes attributes do not follow the rule.");
-			}
+		compareAttributes(node1, node2, rule);
 
 		// Now we compare the children.
 		compareChildrenNodes(node1, node2, rule.isChildrenOrdering());
@@ -120,17 +117,13 @@ public class KomparatorEngine
 
 		// Comparing children lists.
 		boolean result = false;
-		// Following is for readability purpose.
-		if (childrenOrdering)
-			{
-			// We perform the comparison on children as is.
-			}
-		else
-			{
-			// We do not need ordering. So for our benefit, we perform sorting and then proceed.
-			Collections.sort(nodes1);
-			Collections.sort(nodes2);
-			}
+
+		// Perform an ordering test first.
+		checkOrderingMismatch(nodes1, nodes2, null);
+
+		// We do not need ordering. So for our benefit, we perform sorting and then proceed.
+		Collections.sort(nodes1);
+		Collections.sort(nodes2);
 
 		// Now we proceed on a node by node basis, comparing the required node and the node match rules.
 		// We use double counter matching.
@@ -159,7 +152,7 @@ public class KomparatorEngine
 				{
 				// Child 1 is less than child2
 				counter1++;
-				
+
 				// Perform required check.
 				if (child1Rule.isRequired())
 					{
@@ -180,7 +173,7 @@ public class KomparatorEngine
 					}
 				}
 			}
-		while(counter1 < nodes1.size())
+		while (counter1 < nodes1.size())
 			{
 			KomparatorNode child1 = nodes1.get(counter1);
 			KomparatorRule child1Rule = KomparatorManager.getRuleset().getRule(child1.getRuleId());
@@ -192,7 +185,7 @@ public class KomparatorEngine
 				}
 			counter1++;
 			}
-		while(counter2 < nodes2.size())
+		while (counter2 < nodes2.size())
 			{
 			KomparatorNode child2 = nodes2.get(counter2);
 			KomparatorRule child2Rule = KomparatorManager.getRuleset().getRule(child2.getRuleId());
@@ -202,9 +195,82 @@ public class KomparatorEngine
 				// Child 1 is required but missing in file2.
 				logger.error("Mismatch: The node {} in file2 is missing in file1.", child2);
 				}
-			counter2++;			
+			counter2++;
 			}
 		return result;
+		}
+
+	/**
+	 * Checks the ordering of both attribute or the nodes.
+	 * 
+	 * @param <E>
+	 *            The type.
+	 * @param list1
+	 *            The first list.
+	 * @param list2
+	 *            The second list.
+	 * @param node
+	 *            Pass it only when comparing attributes. Else, pass null when comparing nodes.
+	 */
+	private <E extends Comparable> void checkOrderingMismatch(List<E> list1, List<E> list2, KomparatorNode node)
+		{
+		int counter1 = 0;
+		int counter2 = 0;
+		for (; counter1 < list1.size() && counter2 < list2.size();)
+			{
+			E e1 = list1.get(counter1);
+			E e2 = list2.get(counter2);
+
+			int comparison = e1.compareTo(e2);
+			if (comparison == 0)
+				{
+				// We are good. Go ahead.
+				counter1++;
+				counter2++;
+				}
+			else if (comparison < 0)
+				{
+				// item1 is smaller. Search for it in list2.
+				for (int counter3 = counter2; counter3 < list2.size(); counter3++)
+					{
+					E e3 = list2.get(counter3);
+					if (e1.compareTo(e3) == 0)
+						{
+						// We found a match.
+						if (node == null)
+							{
+							logger.error("Order mismatch: The node {} in file1 is not in same order as in file2.", e1);
+							}
+						else
+							{
+							logger.error("Order mismatch: The attribute {} if node {} in file1 is not in same order as in file2.", e1, node);
+							}
+						}
+					}
+				counter1++;
+				}
+			else
+				{
+				// item2 is smaller. Search for it in list1.
+				for (int counter3 = counter2; counter3 < list1.size(); counter3++)
+					{
+					E e3 = list1.get(counter3);
+					if (e2.compareTo(e3) == 0)
+						{
+						// We found a match.
+						if (node == null)
+							{
+							logger.error("Order mismatch: The node {} in file2 is not in same order as in file1.", e2);
+							}
+						else
+							{
+							logger.error("Order mismatch: The attribute {} if node {} in file2 is not in same order as in file1.", e2, node);
+							}
+						}
+					}
+				counter2++;
+				}
+			}
 		}
 
 	/**
@@ -273,45 +339,87 @@ public class KomparatorEngine
 	 * @return true if the attributes confirm to the rules. false if any of the rule is violated.
 	 * 
 	 */
-	private boolean compareAttributes(KomparatorNode node1, KomparatorNode node2, KomparatorRule rule)
+	private void compareAttributes(KomparatorNode node1, KomparatorNode node2, KomparatorRule rule)
 		{
 		List<KomparatorAttribute> attributes1 = node1.getAttributes();
 		List<KomparatorAttribute> attributes2 = node2.getAttributes();
 		if (CommonUtils.isListEmpty(attributes1) && CommonUtils.isListEmpty(attributes2))
 			{
 			// Both the attribute lists are empty. Hence we do not need any comparison.
-			return true;
+			return;
 			}
 
-		boolean result = false;
-		// Following 2 are created only for the readability purpose.
-		boolean needsAttributeOrder = rule.isNeedAttributesOrder();
-		boolean allAttributesRequired = rule.isAllAttributesRequired();
-		if (needsAttributeOrder && allAttributesRequired)
+		// Perform ordering test.
+		checkOrderingMismatch(attributes1, attributes2, node1);
+
+		// If we do not need ordering, we should arrange attributes by name.
+		Collections.sort(attributes1);
+		Collections.sort(attributes2);
+
+		// We perform no null check on the attributes list because they can't be null. In worst case, they will have 0 size().
+		int counter1 = 0;
+		int counter2 = 0;
+		for (; counter1 < attributes1.size() && counter2 < attributes2.size();)
 			{
-			// Ordering and all attributes are required. So perform a counter match.
-			result = AttributeMatchingUtils.singleCounterMatch(attributes1, attributes2, rule.isAllAttributesMatch());
+			KomparatorAttribute attrib1 = attributes1.get(counter1);
+			KomparatorAttribute attrib2 = attributes2.get(counter2);
+
+			int comparison = attrib1.compareTo(attrib2);
+			if (comparison == 0)
+				{
+				// Both the attributes are same.
+				if (rule.isAllAttributesMatch())
+					{
+					// The values must match
+					if (!attrib1.getValue().equals(attrib2.getValue()))
+						{
+						// Values mismatch when the rule says they must match.
+						logger.error("Attribute value mismatch: For node {} in file1 and node {} in file2, the attribute {} has different values - file1 has {} and file2 has {}.", node1, node2,
+								attrib1.getName(), attrib1.getValue(), attrib2.getValue());
+						}
+					}
+				counter1++;
+				counter2++;
+				}
+			else
+				{
+				// The values do not match
+				if (comparison < 0)
+					{
+					// attrib1 is smaller than attrib2
+					if (rule.isAllAttributesRequired())
+						{
+						logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
+						}
+					counter1++;
+					}
+				else
+					{
+					// attrib1 is greater than attrib2
+					if (rule.isAllAttributesRequired())
+						{
+						logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
+						}
+					counter2++;
+					}
+				}
 			}
-		else if (needsAttributeOrder && !allAttributesRequired)
+		if (rule.isAllAttributesRequired())
 			{
-			// Ordering is required, but not all the attributes are required. Perform 2 counter match.
-			result = AttributeMatchingUtils.doubleCounterMatch(attributes1, attributes2, rule.isAllAttributesMatch());
+			// We do this because we can only check if all attributes are required. Match can't be performed obviously.
+			while (counter1 < attributes1.size())
+				{
+				KomparatorAttribute attrib1 = attributes1.get(counter1);
+				logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
+				counter1++;
+				}
+			while (counter2 < attributes2.size())
+				{
+				KomparatorAttribute attrib2 = attributes2.get(counter2);
+				logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
+				counter2++;
+				}
 			}
-		else if (!needsAttributeOrder && allAttributesRequired)
-			{
-			// Ordering is not required, but all the attributes are required. Perform sort and then single counter match.
-			Collections.sort(attributes1);
-			Collections.sort(attributes2);
-			result = AttributeMatchingUtils.singleCounterMatch(attributes1, attributes2, rule.isAllAttributesMatch());
-			}
-		else
-			{
-			// No ordering is required, and even all the attributes are not required. So sort and do 2 counter match only to check values.
-			Collections.sort(attributes1);
-			Collections.sort(attributes2);
-			result = AttributeMatchingUtils.doubleCounterMatch(attributes1, attributes2, rule.isAllAttributesMatch());
-			}
-		return result;
 		}
 
 	/**

@@ -23,7 +23,7 @@ public class Kompare
 		KomparatorParser parser = KomparatorManager.getParser();
 
 		KomparatorNode tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");
-		KomparatorNode tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample2.xml");
+		KomparatorNode tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample3.xml");
 		// Compare the two files.
 		KomparatorEngine engine = new KomparatorEngine();
 		engine.compareDocuments(tree1, tree2);

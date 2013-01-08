@@ -72,18 +72,13 @@ public class XMLType1Node implements KomparatorNode
 
 	public int compareTo(KomparatorNode o)
 		{
-		if (!(o instanceof XMLType1Node))
-			{
-			return -1;
-			}
-		XMLType1Node secondNode = (XMLType1Node) o;
-		int comparison = name.compareTo(secondNode.getName());
+		int comparison = name.compareTo(o.getName());
 		if (comparison == 0)
 			{
 			// The node name is same. Now we need to check the differentiator.
 			if (differentiatorValue != null)
 				{
-				comparison = differentiatorValue.compareTo(secondNode.getDifferentiatorValue());
+				comparison = differentiatorValue.compareTo(o.getDifferentiatorValue());
 				}
 			}
 		return comparison;

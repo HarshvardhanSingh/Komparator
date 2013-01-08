@@ -52,12 +52,16 @@ public class XMLType1Attribute implements KomparatorAttribute
 
 	public int compareTo(KomparatorAttribute o)
 		{
-		if (!(o instanceof XMLType1Attribute))
-			{
-			return -1;
-			}
-		XMLType1Attribute secondAttr = (XMLType1Attribute) o;
-		return name.compareTo(secondAttr.getName());
+		return name.compareTo(o.getName());
 		}
 
+	public String toString()
+		{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Name: ");
+		builder.append(name);
+		builder.append(" | Value: ");
+		builder.append(value);
+		return builder.toString();
+		}
 	}

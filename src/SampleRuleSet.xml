@@ -55,13 +55,13 @@ differentiator
 		<need-attributes-order>0</need-attributes-order>
 		<all-attributes-required>1</all-attributes-required>
 		<all-attributes-match>1</all-attributes-match>
-		<children-ordering>0</children-ordering>
+		<children-ordering>1</children-ordering>
 		<differentiator>id</differentiator>
 	</rule>
 	<rule id="5" name="employee-info">
 		<required>1</required>
 		<need-attributes-order>0</need-attributes-order>
-		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-required>1</all-attributes-required>
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>
 		<differentiator>name</differentiator>
