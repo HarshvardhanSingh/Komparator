@@ -1,24 +1,23 @@
-package com.imaginea.komparator;
+package com.imaginea.komparator.test;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import com.imaginea.komparator.KomparatorManager;
 import com.imaginea.komparator.engine.KomparatorEngine;
 import com.imaginea.komparator.engine.Komparison;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 import com.imaginea.komparator.interfaces.parser.KomparatorParser;
 
-public class Kompare
+public class KomparatorTest
 	{
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args)
+	@BeforeClass
+	public static void testSetup()
 		{
-		Logger logger = LoggerFactory.getLogger(Kompare.class);
 		try
 			{
 			Class.forName("com.imaginea.komparator.xmltype1.parser.XMLType1Parser");
@@ -27,27 +26,37 @@ public class Kompare
 			{
 			e.printStackTrace();
 			}
+		}
 
+	@AfterClass
+	public static void testCleanup()
+		{
+		// Teardown for data used by the unit tests
+		}
+
+	@Test
+	public void test()
+		{
 		KomparatorParser parser = KomparatorManager.getParser();
+
 		KomparatorNode tree1 = null;
 		KomparatorNode tree2 = null;
 		try
 			{
-			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\XMLType1\\XML1RuleSet.xml");
-			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");
-			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample3.xml");
+			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile1.xml");
+			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile2.xml");
 			}
 		catch (FileNotFoundException e)
 			{
-			logger.error("File not found.", e);
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			}
-		// Compare the two files.
+		
 		KomparatorEngine engine = new KomparatorEngine();
 		List<Komparison> comparisons = engine.compareDocuments(tree1, tree2);
 		for (Komparison comparison : comparisons)
 			{
-			logger.error(comparison.toString());
+			System.out.println(comparison.toString());
 			}
 		}
-
 	}

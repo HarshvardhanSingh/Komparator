@@ -17,10 +17,12 @@ public class KomparatorEngine
 	{
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	private KomparisonRuleset ruleset;
+	List<Komparison> comparisons;
 
 	public KomparatorEngine()
 		{
 		ruleset = KomparatorManager.getRuleset();
+		comparisons = new ArrayList<Komparison>();
 		}
 
 	/**
@@ -39,7 +41,6 @@ public class KomparatorEngine
 			{
 			logger.error("The entered tree(s) is empty.");
 			}
-		List<Komparison> comparisons = new ArrayList<Komparison>();
 
 		// Comparison logic goes here.
 		// We consider the two roots as equal.
@@ -60,10 +61,10 @@ public class KomparatorEngine
 				logger.error("Both the root nodes are null.");
 				return;
 			case -2: // Node1 is null. Hence the tree is not same here.
-				logger.error("There is no node in file1 for corresponding node {} in file2.", node2);
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, null, null, node2, null));
 				return;
 			case -3: // Node2 is null. Hence the tree is not same here.
-				logger.error("There is no node in file2 for corresponding node {} in file1.", node1);
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, node1, null, null, null));
 				return;
 			default:
 				// There is a rule.
@@ -100,6 +101,14 @@ public class KomparatorEngine
 		List<KomparatorNode> nodes1 = node1.getChildren();
 		List<KomparatorNode> nodes2 = node2.getChildren();
 
+		// One of the lists are empty. We need to check it was only 1 list empty of both were empty.
+		if (CommonUtils.isListEmpty(nodes1) && CommonUtils.isListEmpty(nodes2))
+			{
+			// Both the lists are empty.
+			return true;
+			}
+		
+		/*
 		// Checking if the children exist for the nodes.
 		if (CommonUtils.isListEmpty(nodes1) || CommonUtils.isListEmpty(nodes2))
 			{
@@ -108,12 +117,13 @@ public class KomparatorEngine
 				{
 				// Both the lists are empty.
 				return true;
-				}
+				}	
 			// Any one of the lists was empty - and hence no match. So return false.
 			logger.error("Number of children mismatch: The node {} of file1 has {} children. The node {} of file 2 has {} children.", node1, node1.getChildren().size(), node2, node2.getChildren()
 					.size());
 			return false;
 			}
+		*/
 
 		// Comparing children lists.
 		boolean result = false;
@@ -157,7 +167,8 @@ public class KomparatorEngine
 				if (child1Rule.isRequired())
 					{
 					// Child 1 is required but missing in file2.
-					logger.error("Mismatch: The node {} in file1 is missing in file2.", child1);
+					comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, child1, null, null, null));
+					// logger.error("Mismatch: The node {} in file1 is missing in file2.", child1);
 					}
 				}
 			else
@@ -169,7 +180,8 @@ public class KomparatorEngine
 				if (child2Rule.isRequired())
 					{
 					// Child 2 is required but missing in file1.
-					logger.error("Mismatch: The node {} in file2 is missing in file1.", child2);
+					comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, null, null, child2, null));
+					// logger.error("Mismatch: The node {} in file2 is missing in file1.", child2);
 					}
 				}
 			}
@@ -181,7 +193,8 @@ public class KomparatorEngine
 			if (child1Rule.isRequired())
 				{
 				// Child 1 is required but missing in file2.
-				logger.error("Mismatch: The node {} in file1 is missing in file2.", child1);
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, child1, null, null, null));
+				// logger.error("Mismatch: The node {} in file1 is missing in file2.", child1);
 				}
 			counter1++;
 			}
@@ -193,7 +206,8 @@ public class KomparatorEngine
 			if (child2Rule.isRequired())
 				{
 				// Child 1 is required but missing in file2.
-				logger.error("Mismatch: The node {} in file2 is missing in file1.", child2);
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_NODE, null, null, child2, null));
+				// logger.error("Mismatch: The node {} in file2 is missing in file1.", child2);
 				}
 			counter2++;
 			}
@@ -239,11 +253,13 @@ public class KomparatorEngine
 						// We found a match.
 						if (node == null)
 							{
-							logger.error("Order mismatch: The node {} in file1 is not in same order as in file2.", e1);
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, (KomparatorNode)e1, null, null, null));
+							// logger.error("Order mismatch: The node {} in file1 is not in same order as in file2.", e1);
 							}
 						else
 							{
-							logger.error("Order mismatch: The attribute {} if node {} in file1 is not in same order as in file2.", e1, node);
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, node, (KomparatorAttribute)e1, null, null));
+							// logger.error("Order mismatch: The attribute {} if node {} in file1 is not in same order as in file2.", e1, node);
 							}
 						}
 					}
@@ -260,11 +276,13 @@ public class KomparatorEngine
 						// We found a match.
 						if (node == null)
 							{
-							logger.error("Order mismatch: The node {} in file2 is not in same order as in file1.", e2);
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, null, null, (KomparatorNode)e2, null));
+							// logger.error("Order mismatch: The node {} in file2 is not in same order as in file1.", e2);
 							}
 						else
 							{
-							logger.error("Order mismatch: The attribute {} if node {} in file2 is not in same order as in file1.", e2, node);
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, null, null, node, (KomparatorAttribute)e2));
+							// logger.error("Order mismatch: The attribute {} if node {} in file2 is not in same order as in file1.", e2, node);
 							}
 						}
 					}
@@ -374,8 +392,9 @@ public class KomparatorEngine
 					if (!attrib1.getValue().equals(attrib2.getValue()))
 						{
 						// Values mismatch when the rule says they must match.
-						logger.error("Attribute value mismatch: For node {} in file1 and node {} in file2, the attribute {} has different values - file1 has {} and file2 has {}.", node1, node2,
-								attrib1.getName(), attrib1.getValue(), attrib2.getValue());
+						comparisons.add(new Komparison(DifferenceType.MISMATCHED_ATTRIBUTE_VALUE, node1, attrib1, node2, attrib2));
+//						logger.error("Attribute value mismatch: For node {} in file1 and node {} in file2, the attribute {} has different values - file1 has {} and file2 has {}.", node1, node2,
+//								attrib1.getName(), attrib1.getValue(), attrib2.getValue());
 						}
 					}
 				counter1++;
@@ -389,7 +408,8 @@ public class KomparatorEngine
 					// attrib1 is smaller than attrib2
 					if (rule.isAllAttributesRequired())
 						{
-						logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
+						comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_ATTRIBUTE, node1, attrib1, null, null));
+						// logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
 						}
 					counter1++;
 					}
@@ -398,25 +418,30 @@ public class KomparatorEngine
 					// attrib1 is greater than attrib2
 					if (rule.isAllAttributesRequired())
 						{
-						logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
+						comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_ATTRIBUTE, null, null, node2, attrib2));
+						// logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
 						}
 					counter2++;
 					}
 				}
 			}
+		
+		// Write logs for the remaining items in any of the list.
 		if (rule.isAllAttributesRequired())
 			{
 			// We do this because we can only check if all attributes are required. Match can't be performed obviously.
 			while (counter1 < attributes1.size())
 				{
 				KomparatorAttribute attrib1 = attributes1.get(counter1);
-				logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_ATTRIBUTE, node1, attrib1, null, null));
+				// logger.error("Attribute mismatch: For node {} and attribute {} of file1, no attribute exists in file2.", node1, attrib1.getName());
 				counter1++;
 				}
 			while (counter2 < attributes2.size())
 				{
 				KomparatorAttribute attrib2 = attributes2.get(counter2);
-				logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
+				comparisons.add(new Komparison(DifferenceType.MISSING_REQUIRED_ATTRIBUTE, null, null, node2, attrib2));
+				// logger.error("Attribute mismatch: For node {} and attribute {} of file2, no attribute exists in file1.", node2, attrib2.getName());
 				counter2++;
 				}
 			}

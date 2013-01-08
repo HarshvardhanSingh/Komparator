@@ -58,10 +58,11 @@ public class XMLType1Attribute implements KomparatorAttribute
 	public String toString()
 		{
 		StringBuilder builder = new StringBuilder();
-		builder.append("Name: ");
+		builder.append("(Name: ");
 		builder.append(name);
 		builder.append(" | Value: ");
 		builder.append(value);
+		builder.append(")");
 		return builder.toString();
 		}
 	}

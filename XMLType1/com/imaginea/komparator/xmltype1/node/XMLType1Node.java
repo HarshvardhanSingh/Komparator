@@ -76,7 +76,7 @@ public class XMLType1Node implements KomparatorNode
 		if (comparison == 0)
 			{
 			// The node name is same. Now we need to check the differentiator.
-			if (differentiatorValue != null)
+			if (differentiatorValue != null && o.getDifferentiatorValue() != null)
 				{
 				comparison = differentiatorValue.compareTo(o.getDifferentiatorValue());
 				}
@@ -87,12 +87,13 @@ public class XMLType1Node implements KomparatorNode
 	public String toString()
 		{
 		StringBuilder builder = new StringBuilder();
-		builder.append("Name: ");
+		builder.append("(Name: ");
 		builder.append(name);
 		builder.append(" | Differentiator Value: ");
 		builder.append(differentiatorValue);
 		builder.append(" | Rule Id: ");
 		builder.append(ruleId);
+		builder.append(")");
 		return builder.toString();
 		}
 	}

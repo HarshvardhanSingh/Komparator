@@ -1,5 +1,7 @@
 package com.imaginea.komparator.interfaces.parser;
 
+import java.io.FileNotFoundException;
+
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 
 /**
@@ -9,5 +11,6 @@ import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
  */
 public interface KomparatorParser
 	{
-	public KomparatorNode parseDocument(String documentPath);
+	public KomparatorNode parseDocument(String documentPath) throws FileNotFoundException;
+	public void setupParser(String rulesetFile) throws FileNotFoundException;
 	}

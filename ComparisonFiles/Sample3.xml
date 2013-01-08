@@ -1,0 +1,151 @@
+<employee-information name="Pramati">
+	<company name="Imaginea">
+		<project name="Dept1">
+			<employees name="devteam">
+				<employee id="1">
+					<info name="name">Imaginea-Dept1-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">ID1EA@imaginea.com</info>
+				</employee>
+				<employee id="2">
+					<info name="name">Imaginea-Dept1-EmpB</info>
+					<info name="designation">Project Manager</info>
+					<info name="email">ID1EB@imaginea.com</info>
+				</employee>
+				<employee id="3">
+					<info name="name">Imaginea-Dept1-EmpC</info>
+					<info name="designation">Team Lead</info>
+					<info name="email">ID1EC@imaginea.com</info>
+				</employee>
+				<employee id="4">
+					<info name="name">Imaginea-Dept1-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">ID1ED@imaginea.com</info>
+				</employee>
+			</employees>
+		</project>
+		<project name="Dept2">
+			<employees name="devteam">
+				<employee id="5">
+					<info name="name">Imaginea-Dept2-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">ID2EA@imaginea.com</info>
+				</employee>
+				<employee id="6">
+					<info name="name">Imaginea-Dept2-EmpB</info>
+					<info name="designation">Project Manager</info>
+					<info name="email">ID2EB@imaginea.com</info>
+				</employee>
+				<employee id="7">
+					<info name="name">Imaginea-Dept2-EmpC</info>
+					<info name="designation">Team Lead</info>
+					<info name="email">ID2EC@imaginea.com</info>
+				</employee>
+				<employee id="8">
+					<info name="name">Imaginea-Dept2-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">ID2ED@imaginea.com</info>
+				</employee>
+			</employees>
+		</project>
+		<project name="Dept3">
+			<employees name="devteam">
+				<employee id="9">
+					<info name="name">Imaginea-Dept3-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">ID3EA@imaginea.com</info>
+				</employee>
+				<employee id="10">
+					<info name="name">Imaginea-Dept3-EmpB</info>
+					<info name="designation">Project Manager</info>
+					<info name="email">ID3EB@imaginea.com</info>
+				</employee>
+				<employee id="11">
+					<info name="name">Imaginea-Dept3-EmpC</info>
+					<info name="designation">Team Lead</info>
+					<info name="email">ID3EC@imaginea.com</info>
+				</employee>
+				<employee id="12">
+					<info name="name">Imaginea-Dept3-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">ID3ED@imaginea.com</info>
+				</employee>
+			</employees>
+		</project>
+	</company>
+	
+	<company name="Qontext">
+		<project name="Dept1">
+			<employees name="devteam">
+				<employee id="1">
+					<info name="name">Qontext-Dept1-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">QD1EA@Qontext.com</info>
+				</employee>
+				<employee id="2">
+					<info name="name">Qontext-Dept1-EmpB</info>
+					<info name="designation">Project Manager</info>
+					<info name="email">QD1EB@Qontext.com</info>
+				</employee>
+				<employee id="3">
+					<info name="name">Qontext-Dept1-EmpC</info>
+					<info name="designation">Team Lead</info>
+					<info name="email">QD1EC@Qontext.com</info>
+				</employee>
+				<employee id="4">
+					<info name="name">Qontext-Dept1-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">QD1ED@Qontext.com</info>
+				</employee>
+			</employees>
+		</project>
+		<project name="Dept2">
+			<employees name="devteam">
+				<employee id="5">
+					<info name="name">Qontext-Dept2-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">QD2EA@Qontext.com</info>
+				</employee>
+				<employee id="6">
+					<info name="name">Qontext-Dept2-EmpB</info>
+					
+					<info name="email">QD2EB@Qontext.com</info>
+				</employee>
+				<employee id="7">
+					<info name="name">Qontext-Dept2-EmpC</info>
+					<info name="email">QD2EC@Qontext.com</info>
+					<info name="designation">Team Lead</info>
+				</employee>
+				<employee id="8">
+					<info name="name">Qontext-Dept2-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">QD2ED@Qontext.com</info>
+				</employee>
+			</employees>
+		</project>
+		<project name="Dept3">
+			<employees name="devteam">
+				<employee id="9">
+					<info name="name">Qontext-Dept3-EmpA</info>
+					<info name="designation">Technical Manager</info>
+					<info name="email">QD3EA@Qontext.com</info>
+				</employee>
+				<employee id="10">
+					<info name="name">Qontext-Dept3-EmpB</info>
+					<info name="designation">Project Manager</info>
+					<info name="email">QD3EB@Qontext.com</info>
+				</employee>
+				<employee id="11">
+					<info name="name">Qontext-Dept3-EmpC</info>
+					<info name="designation">Team Lead</info>
+					<info name="email">QD3EC@Qontext.com</info>
+				</employee>
+				<employee id="12">
+					<info name="name">Qontext-Dept3-EmpD</info>
+					<info name="designation">Architect</info>
+					<info name="email">QD3ED@Qontext.com</info>
+				</employee>
+			</employees>
+		</project>
+	</company>
+</employee-information>

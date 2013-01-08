@@ -19,6 +19,7 @@ import com.imaginea.komparator.xmltype1.node.XMLType1Node;
 public class XMLType1Parser implements KomparatorParser
 	{
 	Logger logger = LoggerFactory.getLogger(XMLType1Parser.class);
+	boolean isParserSetup = false;
 
 	static
 		{
@@ -26,17 +27,25 @@ public class XMLType1Parser implements KomparatorParser
 		// Register itself as the parser.
 		KomparatorManager.setParser(new XMLType1Parser());
 
-		// Create the ruleset based on the rules file.
-		KomparisonRuleset ruleset = new KomparisonRuleset(Thread.currentThread().getContextClassLoader().getResourceAsStream("XML1RuleSet.xml"));
-		KomparatorManager.setRuleset(ruleset);
-
 		logger.info("Registered XMLType1Parser parser.");
 		}
+	
+	public void setupParser(String rulesetFile) throws FileNotFoundException
+		{
+		// Create the ruleset based on the rules file.
+		KomparisonRuleset ruleset = new KomparisonRuleset(new FileInputStream(rulesetFile));
+		KomparatorManager.setRuleset(ruleset);
+		isParserSetup = true;
+		}
 
-	public KomparatorNode parseDocument(String documentPath)
+	public KomparatorNode parseDocument(String documentPath) throws FileNotFoundException
 		{
 		logger.info("Parsing {} file into tree.", documentPath);
-
+		if(! isParserSetup)
+			{
+			logger.error("Parser is not setup yet. Invoke setupParser before invoking this method.");
+			return null;
+			}
 		try
 			{
 			Element root = KomparatorDOMParser.parseDOM(new FileInputStream(documentPath));
@@ -45,9 +54,8 @@ public class XMLType1Parser implements KomparatorParser
 		catch (FileNotFoundException fileNotFoundException)
 			{
 			logger.error("Unable to parse the ruleset file {} as it could not be read.", documentPath, fileNotFoundException);
+			throw fileNotFoundException;
 			}
-
-		return null;
 		}
 
 	public XMLType1Node parseDomTree(Node node)
