@@ -7,13 +7,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.imaginea.komparator.java.node.JavaAttribute;
+import com.imaginea.komparator.java.node.JavaNode;
 import com.imaginea.komparator.java.utils.CharType;
 import com.imaginea.komparator.java.utils.JavaParserUtils;
 import com.imaginea.komparator.java.utils.LexemeType;
+import com.imaginea.komparator.util.CommonUtils;
 
 public class JavaFiniteStateAutomaton
 	{
 	BufferedReader reader;
+	Logger logger = LoggerFactory.getLogger(getClass());
+	JavaNode root = new JavaNode();
+	JavaNode currentNode = root;
 
 	public static void main(String args[]) throws FileNotFoundException, IOException
 		{
@@ -23,6 +32,7 @@ public class JavaFiniteStateAutomaton
 
 	public JavaFiniteStateAutomaton(InputStream stream) throws IOException
 		{
+		logger.debug("Starting the java finite state automation.");
 		reader = new BufferedReader(new InputStreamReader(stream));
 
 		boolean isCommentMultiline = false;
@@ -32,7 +42,6 @@ public class JavaFiniteStateAutomaton
 		boolean isCondition = false;
 		boolean isStaticBlock = false;
 
-		String line = null;
 		CharType currChar, prevChar = CharType.SPACE;
 		StringBuilder lexeme = new StringBuilder();
 		int currentCharInt = 0;
@@ -41,7 +50,7 @@ public class JavaFiniteStateAutomaton
 			char currentChar = (char) currentCharInt;
 
 			currChar = JavaParserUtils.typeOfChar(currentChar);
-
+			logger.debug("Identified the character '{}' as of type {}.", currentChar, currChar);
 			switch (currChar)
 				{
 				case FORWARD_SLASH:
@@ -142,7 +151,7 @@ public class JavaFiniteStateAutomaton
 							}
 						else
 							{
-							System.out.println("Encountered a lexical notation which we dont know about.");
+							logger.error("Encountered a lexical notation which we dont know about.");
 							}
 						}
 					break;
@@ -171,7 +180,7 @@ public class JavaFiniteStateAutomaton
 						}
 					else
 						{
-						System.out.println("Closing a curly brace we have no idea about.");
+						logger.error("Closing a curly brace we have no idea about.");
 						}
 					break;
 				case NEW_LINE:
@@ -193,19 +202,59 @@ public class JavaFiniteStateAutomaton
 						// addLexeme(lexeme, LexemeType.STATEMENT);
 						}
 					break;
+				default:
+					logger.error("Encountered a char we do not know about.");
 				}
 			prevChar = currChar;
 			}
+		logger.debug("The java finite state automation complete.");
 		}
 
 	private void addLexeme(StringBuilder lexeme, LexemeType lexemeType)
 		{
+		if ("}".equals(lexeme.toString().trim()))
+			{
+			// We are closing and hence must move a step up.
+			currentNode = currentNode.getParent();
+			}
+		else
+			{
+			switch (lexemeType)
+				{
+				case CLASS:
+					JavaNode classNode = NodeCreationHelper.createClassNode(lexeme.toString().trim());
+					currentNode.getChildren().add(classNode);
+					classNode.setParent(currentNode);
+					currentNode = classNode;
+					break;
+				case METHOD:
+					JavaNode methodNode = NodeCreationHelper.createMethodNode(lexeme.toString().trim());
+					currentNode.getChildren().add(methodNode);
+					methodNode.setParent(currentNode);
+					currentNode = methodNode;
+					break;
+				case STATIC_BLOCK:
+					JavaNode staticNode = NodeCreationHelper.createStaticBlockNode(lexeme.toString().trim());
+					currentNode.getChildren().add(staticNode);
+					staticNode.setParent(currentNode);
+					currentNode = staticNode;
+					break;
+				case CONDITION:
+					break;
+				case COMMENT:
+					break;
+				case STATEMENT:
+					break;
+				default:
+					break;
+				}
+			}
 		if (lexeme.toString().trim().length() == 0)
 			{
 			// Not a string worth paying attention to.
 			return;
 			}
-		System.out.println("LexemeType: " + lexemeType + " | Lexeme: " + lexeme);
+		logger.info("LexemeType: " + lexemeType + " | Lexeme: " + lexeme);
 		lexeme.setLength(0);
 		}
 	}

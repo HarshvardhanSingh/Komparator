@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.imaginea.komparator.interfaces.nodes.KomparatorAttribute;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
+import com.imaginea.komparator.java.utils.LexemeType;
 
 public class JavaNode implements KomparatorNode
 	{
@@ -13,7 +14,9 @@ public class JavaNode implements KomparatorNode
 	private List<KomparatorAttribute> attributes = new ArrayList<KomparatorAttribute>();
 	private List<KomparatorNode> children = new ArrayList<KomparatorNode>();
 	private String differentiatorValue;
-
+	private JavaNode parent;
+	private LexemeType lexemeType;
+	
 	public String getName()
 		{
 		return name;
@@ -64,8 +67,45 @@ public class JavaNode implements KomparatorNode
 		this.differentiatorValue = differentiatorValue;
 		}
 
+	public JavaNode getParent()
+		{
+		return parent;
+		}
+
+	public void setParent(JavaNode parent)
+		{
+		this.parent = parent;
+		}
+
+	public LexemeType getLexemeType()
+		{
+		return lexemeType;
+		}
+
+	public void setLexemeType(LexemeType lexemeType)
+		{
+		this.lexemeType = lexemeType;
+		}
+
 	public int compareTo(KomparatorNode o)
 		{
-		return 0;
+		if (!(o instanceof JavaNode))
+			{
+			return -1;
+			}
+		JavaNode secondNode = (JavaNode) o;
+		if (lexemeType.ordinal() < secondNode.getLexemeType().ordinal())
+			{
+			return -1;
+			}
+		else if (lexemeType.ordinal() > secondNode.getLexemeType().ordinal())
+			{
+			return 1;
+			}
+		else
+			{
+			// Both lexeme types are same. Hence we compare the names.
+			return name.compareTo(secondNode.getName());
+			}
 		}
 	}

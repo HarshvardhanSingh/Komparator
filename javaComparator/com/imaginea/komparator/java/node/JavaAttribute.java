@@ -13,6 +13,16 @@ public class JavaAttribute implements KomparatorAttribute
 	 */
 	private String value;
 
+	public JavaAttribute()
+		{
+		}
+
+	public JavaAttribute(String name, String value)
+		{
+		this.name = name;
+		this.value = value;
+		}
+
 	public String getName()
 		{
 		return name;
@@ -35,7 +45,6 @@ public class JavaAttribute implements KomparatorAttribute
 
 	public int compareTo(KomparatorAttribute o)
 		{
-		
-		return 0;
+		return name.compareTo(o.getName());
 		}
 	}
