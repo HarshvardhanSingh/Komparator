@@ -33,9 +33,13 @@ public class Kompare
 		KomparatorNode tree2 = null;
 		try
 			{
-			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\XMLType1\\XML1RuleSet.xml");
-			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");
-			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample3.xml");
+			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestRuleSet.xml");
+			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile1.xml");
+			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile2.xml");
+			
+//			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\XMLType1\\XML1RuleSet.xml");
+//			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");
+//			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample3.xml");
 			}
 		catch (FileNotFoundException e)
 			{

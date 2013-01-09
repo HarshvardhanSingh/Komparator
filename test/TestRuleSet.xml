@@ -24,6 +24,9 @@ children-ordering
 differentiator
 	the attribute that differentiates this node with other nodes. For a node without a differentiator attribute, 
 	we cannot perform the needs-order or required checks.
+
+Note: The attribute ordering is not a part of XML information and hence not preserved by APIs like DOM.
+So we too are omitting attribute ordering for now.
  -->
 <ruleset>
 	<rule id="1" name="employee-information">
@@ -36,7 +39,7 @@ differentiator
 	</rule>
 	<rule id="2" name="company">
 		<required>1</required>
-		<need-attributes-order>0</need-attributes-order>
+		<need-attributes-order>1</need-attributes-order>
 		<all-attributes-required>1</all-attributes-required>
 		<all-attributes-match>1</all-attributes-match>
 		<children-ordering>0</children-ordering>

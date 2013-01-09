@@ -1,5 +1,5 @@
 <employee-information name="Pramati">
-	<company name="Imaginea">
+	<company name="Imaginea" location="Hyderabad">
 		<project name="Dept1">
 			<employees name="devteam">
 				<employee id="1">
@@ -74,7 +74,7 @@
 		</project>
 	</company>
 	
-	<company name="Qontext">
+	<company name="Qontext" location="Hyderabad">
 		<project name="Dept1">
 			<employees name="devteam">
 				<employee id="1">
@@ -144,6 +144,29 @@
 					<info name="name">Qontext-Dept3-EmpD</info>
 					<info name="designation">Architect</info>
 					<info name="email">QD3ED@Qontext.com</info>
+				</employee>
+			</employees>
+		</project>
+	</company>
+	<company name="SocialTwist" location="Hyderabad">
+		<project name="Dept1">
+			<employees name="devteam">
+				<employee id="13">
+					<info name="name">ST-Dept1-dev-EmpA</info>
+					<info name="designation">Architect</info>
+					<info name="email">STD1EA@ST.com</info>
+				</employee>
+				<employee id="13">
+					<info name="name">ST-Dept1-dev-EmpB</info>
+					<info name="designation">Developer</info>
+					<info name="email">STD1EB@ST.com</info>
+				</employee>
+			</employees>
+			<employees name="hrteam">
+				<employee id="13">
+					<info name="name">ST-Dept1-hr-EmpC</info>
+					<info name="designation">HR Head</info>
+					<info name="email">STD1EC@ST.com</info>
 				</employee>
 			</employees>
 		</project>

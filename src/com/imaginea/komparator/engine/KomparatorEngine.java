@@ -107,23 +107,25 @@ public class KomparatorEngine
 			// Both the lists are empty.
 			return true;
 			}
-		
+
 		/*
-		// Checking if the children exist for the nodes.
-		if (CommonUtils.isListEmpty(nodes1) || CommonUtils.isListEmpty(nodes2))
-			{
-			// One of the lists are empty. We need to check it was only 1 list empty of both were empty.
-			if (CommonUtils.isListEmpty(nodes1) && CommonUtils.isListEmpty(nodes2))
-				{
-				// Both the lists are empty.
-				return true;
-				}	
-			// Any one of the lists was empty - and hence no match. So return false.
-			logger.error("Number of children mismatch: The node {} of file1 has {} children. The node {} of file 2 has {} children.", node1, node1.getChildren().size(), node2, node2.getChildren()
-					.size());
-			return false;
-			}
-		*/
+		 * // Checking if the children exist for the nodes.
+		 * if (CommonUtils.isListEmpty(nodes1) || CommonUtils.isListEmpty(nodes2))
+		 * {
+		 * // One of the lists are empty. We need to check it was only 1 list empty of both were empty.
+		 * if (CommonUtils.isListEmpty(nodes1) && CommonUtils.isListEmpty(nodes2))
+		 * {
+		 * // Both the lists are empty.
+		 * return true;
+		 * }
+		 * // Any one of the lists was empty - and hence no match. So return false.
+		 * logger.error(
+		 * "Number of children mismatch: The node {} of file1 has {} children. The node {} of file 2 has {} children.",
+		 * node1, node1.getChildren().size(), node2, node2.getChildren()
+		 * .size());
+		 * return false;
+		 * }
+		 */
 
 		// Comparing children lists.
 		boolean result = false;
@@ -213,7 +215,7 @@ public class KomparatorEngine
 			}
 		return result;
 		}
-
+	
 	/**
 	 * Checks the ordering of both attribute or the nodes.
 	 * 
@@ -224,7 +226,8 @@ public class KomparatorEngine
 	 * @param list2
 	 *            The second list.
 	 * @param node
-	 *            Pass it only when comparing attributes. Else, pass null when comparing nodes.
+	 *            Pass it only when comparing attributes. Else, pass null when comparing nodes. This will be used for
+	 *            logging which node's attributed didn't match.
 	 */
 	private <E extends Comparable> void checkOrderingMismatch(List<E> list1, List<E> list2, KomparatorNode node)
 		{
@@ -253,12 +256,12 @@ public class KomparatorEngine
 						// We found a match.
 						if (node == null)
 							{
-							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, (KomparatorNode)e1, null, null, null));
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, (KomparatorNode) e1, null, null, null));
 							// logger.error("Order mismatch: The node {} in file1 is not in same order as in file2.", e1);
 							}
 						else
 							{
-							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, node, (KomparatorAttribute)e1, null, null));
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, node, (KomparatorAttribute) e1, null, null));
 							// logger.error("Order mismatch: The attribute {} if node {} in file1 is not in same order as in file2.", e1, node);
 							}
 						}
@@ -276,12 +279,90 @@ public class KomparatorEngine
 						// We found a match.
 						if (node == null)
 							{
-							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, null, null, (KomparatorNode)e2, null));
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, null, null, (KomparatorNode) e2, null));
 							// logger.error("Order mismatch: The node {} in file2 is not in same order as in file1.", e2);
 							}
 						else
 							{
-							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, null, null, node, (KomparatorAttribute)e2));
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, null, null, node, (KomparatorAttribute) e2));
+							// logger.error("Order mismatch: The attribute {} if node {} in file2 is not in same order as in file1.", e2, node);
+							}
+						}
+					}
+				counter2++;
+				}
+			}
+		}
+
+	/**
+	 * Checks the ordering of both attribute or the nodes.
+	 * 
+	 * @param <E>
+	 *            The type.
+	 * @param list1
+	 *            The first list.
+	 * @param list2
+	 *            The second list.
+	 * @param node
+	 *            Pass it only when comparing attributes. Else, pass null when comparing nodes. This will be used for
+	 *            logging which node's attributed didn't match.
+	 */
+	private <E extends Comparable> void checkOrderingMismatch_old(List<E> list1, List<E> list2, KomparatorNode node)
+		{
+		int counter1 = 0;
+		int counter2 = 0;
+		for (; counter1 < list1.size() && counter2 < list2.size();)
+			{
+			E e1 = list1.get(counter1);
+			E e2 = list2.get(counter2);
+
+			int comparison = e1.compareTo(e2);
+			if (comparison == 0)
+				{
+				// We are good. Go ahead.
+				counter1++;
+				counter2++;
+				}
+			else if (comparison < 0)
+				{
+				// item1 is smaller. Search for it in list2.
+				for (int counter3 = counter2; counter3 < list2.size(); counter3++)
+					{
+					E e3 = list2.get(counter3);
+					if (e1.compareTo(e3) == 0)
+						{
+						// We found a match.
+						if (node == null)
+							{
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, (KomparatorNode) e1, null, null, null));
+							// logger.error("Order mismatch: The node {} in file1 is not in same order as in file2.", e1);
+							}
+						else
+							{
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, node, (KomparatorAttribute) e1, null, null));
+							// logger.error("Order mismatch: The attribute {} if node {} in file1 is not in same order as in file2.", e1, node);
+							}
+						}
+					}
+				counter1++;
+				}
+			else
+				{
+				// item2 is smaller. Search for it in list1.
+				for (int counter3 = counter2; counter3 < list1.size(); counter3++)
+					{
+					E e3 = list1.get(counter3);
+					if (e2.compareTo(e3) == 0)
+						{
+						// We found a match.
+						if (node == null)
+							{
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_NODE_ORDER, null, null, (KomparatorNode) e2, null));
+							// logger.error("Order mismatch: The node {} in file2 is not in same order as in file1.", e2);
+							}
+						else
+							{
+							comparisons.add(new Komparison(DifferenceType.IMPROPER_ATTRIBUTE_ORDER, null, null, node, (KomparatorAttribute) e2));
 							// logger.error("Order mismatch: The attribute {} if node {} in file2 is not in same order as in file1.", e2, node);
 							}
 						}
@@ -393,8 +474,8 @@ public class KomparatorEngine
 						{
 						// Values mismatch when the rule says they must match.
 						comparisons.add(new Komparison(DifferenceType.MISMATCHED_ATTRIBUTE_VALUE, node1, attrib1, node2, attrib2));
-//						logger.error("Attribute value mismatch: For node {} in file1 and node {} in file2, the attribute {} has different values - file1 has {} and file2 has {}.", node1, node2,
-//								attrib1.getName(), attrib1.getValue(), attrib2.getValue());
+						//						logger.error("Attribute value mismatch: For node {} in file1 and node {} in file2, the attribute {} has different values - file1 has {} and file2 has {}.", node1, node2,
+						//								attrib1.getName(), attrib1.getValue(), attrib2.getValue());
 						}
 					}
 				counter1++;
@@ -425,7 +506,7 @@ public class KomparatorEngine
 					}
 				}
 			}
-		
+
 		// Write logs for the remaining items in any of the list.
 		if (rule.isAllAttributesRequired())
 			{
