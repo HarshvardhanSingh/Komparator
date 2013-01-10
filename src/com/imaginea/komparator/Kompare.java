@@ -21,7 +21,8 @@ public class Kompare
 		Logger logger = LoggerFactory.getLogger(Kompare.class);
 		try
 			{
-			Class.forName("com.imaginea.komparator.xmltype1.parser.XMLType1Parser");
+//			Class.forName("com.imaginea.komparator.xmltype1.parser.XMLType1Parser");
+			Class.forName("com.imaginea.komparator.java.parser.JavaParser");
 			}
 		catch (ClassNotFoundException e)
 			{
@@ -33,9 +34,14 @@ public class Kompare
 		KomparatorNode tree2 = null;
 		try
 			{
-			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestRuleSet.xml");
-			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile1.xml");
-			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile2.xml");
+			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\javaComparator\\javaRuleset.xml");
+			tree1 = parser.parseDocument("E:\\FileKompare\\Test1.java");
+			tree2 = parser.parseDocument("E:\\FileKompare\\Test2.java");
+			
+			
+//			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestRuleSet.xml");
+//			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile1.xml");
+//			tree2 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\test\\TestFile2.xml");
 			
 //			parser.setupParser("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\XMLType1\\XML1RuleSet.xml");
 //			tree1 = parser.parseDocument("E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\ComparisonFiles\\Sample1.xml");

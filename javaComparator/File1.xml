@@ -1,0 +1,18 @@
+<javafile file-path="E:\JavaStuff\Workspace\WorkspaceFirst\Komparator\javaComparator\com\imaginea\komparator\java\files\File1.java" >
+<statement value="package com.imaginea.komparator.java.files;" />
+<class name="File1" access-modifier="public" >
+<coment type="multiline" >
+<attribute name="value">
+/***
+ ** @param args
+ **/
+</attribute></coment>
+<method static="true" return-type="void" name="main" access-modifier="public" signature="public static void main(String[] args)" >
+<parameter paramType="String[]" paramValue="args" />
+<coment type="singleline" value="// TODO Auto-generated method stub" />
+</method>
+<method return-type="void" name="myMethod" access-modifier="public" signature="public void myMethod(String arg)" >
+<parameter paramType="String" paramValue="arg" />
+</method>
+</class>
+</javafile>

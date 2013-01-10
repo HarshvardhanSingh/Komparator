@@ -1,8 +1,12 @@
 package com.imaginea.komparator.java.parser;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +14,7 @@ import java.io.InputStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
 import com.imaginea.komparator.java.node.JavaAttribute;
 import com.imaginea.komparator.java.node.JavaNode;
 import com.imaginea.komparator.java.utils.CharType;
@@ -17,22 +22,68 @@ import com.imaginea.komparator.java.utils.JavaParserUtils;
 import com.imaginea.komparator.java.utils.LexemeType;
 import com.imaginea.komparator.util.CommonUtils;
 
-public class JavaFiniteStateAutomaton
+public class JavaLexemeParser
 	{
 	BufferedReader reader;
 	Logger logger = LoggerFactory.getLogger(getClass());
-	JavaNode root = new JavaNode();
-	JavaNode currentNode = root;
+	JavaNode root = null;
+	JavaNode currentNode = null;
 
-	public static void main(String args[]) throws FileNotFoundException, IOException
+	public KomparatorNode getTree()
 		{
-		JavaFiniteStateAutomaton javaFiniteStateAutomaton = new JavaFiniteStateAutomaton(new FileInputStream(
-				"E:\\JavaStuff\\Workspace\\WorkspaceFirst\\Komparator\\javaComparator\\com\\imaginea\\komparator\\java\\files\\File1.java"));
+		return root;
 		}
 
-	public JavaFiniteStateAutomaton(InputStream stream) throws IOException
+	/**
+	 * Prints the create lexical tree on the given path as an XML
+	 * 
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean createLexemeTreeAsXML(String path)
+		{
+		if (path == null)
+			{
+			logger.error("The path to print the lecical XML is null");
+			return false;
+			}
+		BufferedWriter writer = null;
+		try
+			{
+			writer = new BufferedWriter(new FileWriter(path));
+			writer.write(root.toXML());
+			}
+		catch (IOException ioException)
+			{
+			logger.error("Unable to write the lexical XML into the file {}.", path, ioException);
+			return false;
+			}
+		finally
+			{
+			if (writer != null)
+				{
+				try
+					{
+					writer.close();
+					}
+				catch (IOException e)
+					{
+					logger.error("An error occured while closing the writer.");
+					}
+				}
+			}
+		return true;
+		}
+
+	public JavaLexemeParser(String file) throws IOException
 		{
 		logger.debug("Starting the java finite state automation.");
+
+		// Setting up root node.
+		File fileObject = new File(file);
+		root = currentNode = NodeCreationHelper.createRootNode(fileObject);
+		InputStream stream = new FileInputStream(file);
 		reader = new BufferedReader(new InputStreamReader(stream));
 
 		boolean isCommentMultiline = false;
@@ -240,12 +291,23 @@ public class JavaFiniteStateAutomaton
 					currentNode = staticNode;
 					break;
 				case CONDITION:
+					JavaNode conditionNode = NodeCreationHelper.createConditionNode(lexeme.toString().trim());
+					currentNode.getChildren().add(conditionNode);
+					conditionNode.setParent(currentNode);
+					currentNode = conditionNode;
 					break;
 				case COMMENT:
+					JavaNode comentNode = NodeCreationHelper.createCommentNode(lexeme.toString().trim());
+					currentNode.getChildren().add(comentNode);
+					comentNode.setParent(currentNode);
 					break;
 				case STATEMENT:
+					JavaNode statementNode = NodeCreationHelper.createStatementNode(lexeme.toString().trim());
+					currentNode.getChildren().add(statementNode);
+					statementNode.setParent(currentNode);
 					break;
 				default:
+					logger.error("Encountered an invalid lexele type {}.", lexemeType);
 					break;
 				}
 			}

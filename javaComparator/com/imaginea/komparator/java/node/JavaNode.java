@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.imaginea.komparator.interfaces.nodes.KomparatorAttribute;
 import com.imaginea.komparator.interfaces.nodes.KomparatorNode;
-import com.imaginea.komparator.java.utils.LexemeType;
 
 public class JavaNode implements KomparatorNode
 	{
@@ -15,8 +14,7 @@ public class JavaNode implements KomparatorNode
 	private List<KomparatorNode> children = new ArrayList<KomparatorNode>();
 	private String differentiatorValue;
 	private JavaNode parent;
-	private LexemeType lexemeType;
-	
+
 	public String getName()
 		{
 		return name;
@@ -77,35 +75,82 @@ public class JavaNode implements KomparatorNode
 		this.parent = parent;
 		}
 
-	public LexemeType getLexemeType()
+	public int compareTo(KomparatorNode secondNode)
 		{
-		return lexemeType;
+		int nameCompare = name.compareTo(secondNode.getName());
+		if (nameCompare == 0)
+			{
+			return differentiatorValue.compareTo(secondNode.getDifferentiatorValue());
+			}
+		return nameCompare;
+		}
+	
+	public String toString()
+		{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Name: ");
+		builder.append(name);
+		builder.append(" | Differentiator: ");
+		builder.append(differentiatorValue);
+		builder.append(" | RuleId: ");
+		builder.append(ruleId);
+		return builder.toString();
 		}
 
-	public void setLexemeType(LexemeType lexemeType)
+	public String toXML()
 		{
-		this.lexemeType = lexemeType;
-		}
+		JavaAttribute attributeToBeValue = null;
+		StringBuilder builder = new StringBuilder();
+		builder.append("<");
+		builder.append(name);
+		builder.append(" ");
+		for (int attributeCounter = 0; attributeCounter < getAttributes().size(); attributeCounter++)
+			{
+			JavaAttribute attribute = (JavaAttribute) getAttributes().get(attributeCounter);
+			if ("value".equals(attribute.getName()) && attribute.getValue().contains("\n"))
+				{
+				attributeToBeValue = attribute;
+				}
+			else
+				{
+				builder.append(attribute.getName());
+				builder.append("=\"");
+				builder.append(attribute.getValue());
+				builder.append("\" ");
+				}
+			}
 
-	public int compareTo(KomparatorNode o)
-		{
-		if (!(o instanceof JavaNode))
+		// All the attributes have been printed. We need to see if there is any attribute that needs to come as value in tags.
+		if (attributeToBeValue != null)
 			{
-			return -1;
+			builder.append(">\n<attribute name=\"");
+			builder.append(attributeToBeValue.getName());
+			builder.append("\">\n");
+			builder.append(attributeToBeValue.getValue());
+			builder.append("\n</attribute>");
 			}
-		JavaNode secondNode = (JavaNode) o;
-		if (lexemeType.ordinal() < secondNode.getLexemeType().ordinal())
+		if ((getChildren() == null || getChildren().size() == 0) && attributeToBeValue == null)
 			{
-			return -1;
-			}
-		else if (lexemeType.ordinal() > secondNode.getLexemeType().ordinal())
-			{
-			return 1;
+			// There are no children. Hence we can close here itself.
+			builder.append("/>");
 			}
 		else
 			{
-			// Both lexeme types are same. Hence we compare the names.
-			return name.compareTo(secondNode.getName());
+			if (attributeToBeValue == null)
+				{
+				// If we did not write values in the tags, then we can close the tag. Otherwise the tag has already been closed.
+				builder.append(">\n");
+				}
+			for (int childrenCounter = 0; childrenCounter < getChildren().size(); childrenCounter++)
+				{
+				JavaNode child = (JavaNode) getChildren().get(childrenCounter);
+				builder.append(child.toXML());
+				builder.append("\n");
+				}
+			builder.append("</");
+			builder.append(name);
+			builder.append(">");
 			}
+		return builder.toString();
 		}
 	}

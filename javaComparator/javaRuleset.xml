@@ -1,0 +1,81 @@
+<ruleset>
+	<rule id="1" name="javafile">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-match>0</all-attributes-match>
+		<children-ordering>1</children-ordering>
+	</rule>
+	<rule id="2" name="statement">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<differentiator>value</differentiator>
+	</rule>
+	<rule id="3" name="class">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>1</children-ordering>
+		<differentiator>name</differentiator>
+	</rule>
+	<rule id="4" name="coment">
+		<required>0</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>0</all-attributes-required>
+		<all-attributes-match>0</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<differentiator>value</differentiator>
+	</rule>
+	<rule id="5" name="method">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>1</children-ordering>
+		<differentiator>signature</differentiator>
+	</rule>
+	<rule id="6" name="parameter">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>1</children-ordering>
+		<differentiator>signature</differentiator>
+	</rule>
+	<rule id="7" name="static-block">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>1</children-ordering>
+		<differentiator>block-type</differentiator>
+	</rule>
+	<rule id="8" name="extends">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<differentiator>name</differentiator>
+	</rule>
+	<rule id="9" name="implements">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>0</children-ordering>
+		<differentiator>name</differentiator>
+	</rule>
+	<rule id="10" name="condition">
+		<required>1</required>
+		<need-attributes-order>0</need-attributes-order>
+		<all-attributes-required>1</all-attributes-required>
+		<all-attributes-match>1</all-attributes-match>
+		<children-ordering>1</children-ordering>
+		<differentiator>differentiator</differentiator>
+	</rule>
+</ruleset>

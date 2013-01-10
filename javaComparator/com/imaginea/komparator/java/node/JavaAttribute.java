@@ -47,4 +47,14 @@ public class JavaAttribute implements KomparatorAttribute
 		{
 		return name.compareTo(o.getName());
 		}
+	
+	public String toString()
+		{
+		StringBuilder builder = new StringBuilder();
+		builder.append("Name: ");
+		builder.append(name);
+		builder.append(" | Value: ");
+		builder.append(value);		
+		return builder.toString();
+		}
 	}
